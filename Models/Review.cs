@@ -10,6 +10,8 @@ namespace BookApi.Models
         public int Id { get; set; }
         public string Headline { get; set; }
         public string ReviewText { get; set; }
+        public virtual ICollection<Reviewer> Reviewers{ get; set; }
+        public virtual Book Book { get; set; }
 
     }
 }
