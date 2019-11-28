@@ -20,7 +20,7 @@ namespace BookApi.Models
         [Required]
         [StringLength(2000, MinimumLength = 50, ErrorMessage = "Review must be between 10 and 200 characters")]
         public string ReviewText { get; set; }
-        public virtual ICollection<Reviewer> Reviewers{ get; set; }
+        public virtual Reviewer Reviewers { get; set; }
         public virtual Book Book { get; set; }
 
     }
