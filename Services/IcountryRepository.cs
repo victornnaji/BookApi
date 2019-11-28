@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookApi.Services
 {
-    interface IcountryRepository
+    public interface ICountryRepository
     {
         ICollection<Country> GetCountries();
         Country GetCountry(int countryId);
