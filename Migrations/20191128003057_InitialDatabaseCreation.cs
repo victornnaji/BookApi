@@ -116,7 +116,7 @@ namespace BookApi.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Headline = table.Column<string>(maxLength: 200, nullable: false),
                     ReviewText = table.Column<string>(maxLength: 2000, nullable: false),
-                    ReviewersId = table.Column<int>(nullable: true),
+                    ReviewerId = table.Column<int>(nullable: true),
                     BookId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -130,7 +130,7 @@ namespace BookApi.Migrations
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reviews_Reviewers_ReviewersId",
-                        column: x => x.ReviewersId,
+                        column: x => x.ReviewerId,
                         principalTable: "Reviewers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -183,7 +183,7 @@ namespace BookApi.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Reviews_ReviewersId",
                 table: "Reviews",
-                column: "ReviewersId");
+                column: "ReviewerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
