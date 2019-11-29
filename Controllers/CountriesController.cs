@@ -31,7 +31,7 @@ namespace BookApi.Controllers
 
             var countriesDto = new List<CountryDto>();
 
-            foreach(var country in countries)
+            foreach (var country in countries)
             {
                 countriesDto.Add(new CountryDto
                 {
@@ -39,6 +39,27 @@ namespace BookApi.Controllers
                     Name = country.Name
                 });
             }
+
+            return Ok(countriesDto);
+        }
+
+
+        // api/country/countryId
+        [HttpGet("{countryId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(200, Type = typeof(CountryDto))]
+        public IActionResult GetCountry(int countryId)
+        {
+            if (!_countryRepository.CountryExists(countryId)) return NotFound();
+
+            var country = _countryRepository.GetCountry(countryId);
+
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var countriesDto = new List<CountryDto>();
+
+            countriesDto.Add( new CountryDto { Id= country.Id, Name = country.Name });
 
             return Ok(countriesDto);
         }
