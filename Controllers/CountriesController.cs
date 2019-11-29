@@ -1,4 +1,5 @@
-﻿using BookApi.Services;
+﻿using BookApi.Dtos;
+using BookApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -19,11 +20,27 @@ namespace BookApi.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<CountryDto>))]
         public IActionResult GetCountries()
         {
+
             var countries = _countryRepository.GetCountries();
 
-            return Ok(countries);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var countriesDto = new List<CountryDto>();
+
+            foreach(var country in countries)
+            {
+                countriesDto.Add(new CountryDto
+                {
+                    Id = country.Id,
+                    Name = country.Name
+                });
+            }
+
+            return Ok(countriesDto);
         }
     }
 }
