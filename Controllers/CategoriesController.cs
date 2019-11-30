@@ -59,7 +59,7 @@ namespace BookApi.Controllers
             return Ok(categoryDto);
         }
 
-
+        //GET: api/categories/books/bookId
         [HttpGet("books/{bookId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
@@ -81,6 +81,35 @@ namespace BookApi.Controllers
 
             return Ok(categoriesDto);
 
+        }
+
+        //GET: api/categories/categoryId/books
+        [HttpGet("{categoryId}/books")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<BookDto>))]
+        public IActionResult GetBooksFromCategory(int categoryId)
+        {
+            if (!_categoryRepository.CategoryExists(categoryId)) return NotFound();
+
+            var books = _categoryRepository.GetBooksForCategory(categoryId);
+
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var bookDto = new List<BookDto>();
+
+            foreach (var book in books)
+            {
+                bookDto.Add(new BookDto
+                {
+                    Id = book.Id,
+                    Isbn = book.Isbn,
+                    Title = book.Title,
+                    DatePublished = book.DatePublished
+                });
+            }
+
+            return Ok(bookDto);
         }
 
     }
