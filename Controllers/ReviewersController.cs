@@ -23,7 +23,7 @@ namespace BookApi.Controllers
         // GET: api/Reviewers
         [HttpGet]
         [ProducesResponseType(400)]
-        [ProducesResponseType(200, Type= typeof(ReviewerDto))]
+        [ProducesResponseType(200, Type= typeof(IEnumerable<ReviewerDto>))]
         public IActionResult GetReviewers()
         {
             var reviewers = _reviewerRepository.GetReviewers();
@@ -45,6 +45,56 @@ namespace BookApi.Controllers
             return Ok(reviewerDto);
         }
 
-       
+        [HttpGet("{reviewerId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(200, Type = typeof(ReviewerDto))]
+        public IActionResult GetReviewer(int reviewerId)
+        {
+            if (!_reviewerRepository.ReviewerExists(reviewerId)) return NotFound();
+
+            var reviewer = _reviewerRepository.GetReviewer(reviewerId);
+
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var reviewerDto = new List<ReviewerDto>();
+
+            reviewerDto.Add(new ReviewerDto { Id = reviewer.Id, FirstName = reviewer.FirstName, LastName = reviewer.LastName });
+
+            return Ok(reviewerDto);
+        }
+
+        //api/reviewers/reviewerId/reviews
+        [HttpGet("{reviewerId}/reviews")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<ReviewDto>))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult GetReviewsByReviewer(int reviewerId)
+        {
+            if (!_reviewerRepository.ReviewerExists(reviewerId))
+                return NotFound();
+
+            var reviews = _reviewerRepository.GetReviewsByReviewer(reviewerId);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var reviewsDto = new List<ReviewDto>();
+            foreach (var review in reviews)
+            {
+                reviewsDto.Add(new ReviewDto()
+                {
+                    Id = review.Id,
+                    Headline = review.Headline,
+                    ReviewText = review.ReviewText
+                });
+            }
+
+            return Ok(reviewsDto);
+        }
+
+
+
+
     }
 }

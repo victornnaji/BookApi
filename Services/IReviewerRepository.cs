@@ -12,6 +12,6 @@ namespace BookApi.Services
         Reviewer GetReviewer(int reviewerId);
         ICollection<Review> GetReviewsByReviewer(int reviewerId);
         Reviewer GetReviewerOfAReview(int reviewId);
-        bool ReviewerExists(int reviewer);
+        bool ReviewerExists(int reviewerId);
     }
 }
