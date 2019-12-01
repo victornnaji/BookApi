@@ -21,7 +21,8 @@ namespace BookApi.Services
 
         public Reviewer GetReviewerOfAReview(int reviewId)
         {
-            return _reviewerContext.Reviews.Where(rv => rv.Id == reviewId).Select(r => r.Reviewer).FirstOrDefault();
+            var reviewerId =  _reviewerContext.Reviews.Where(rv => rv.Id == reviewId).Select(r => r.Reviewer.Id).FirstOrDefault();
+            return _reviewerContext.Reviewers.Where(r => r.Id == reviewerId).FirstOrDefault();
         }
 
         public ICollection<Reviewer> GetReviewers()
