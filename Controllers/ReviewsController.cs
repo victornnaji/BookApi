@@ -13,15 +13,15 @@ namespace BookApi.Controllers
     [ApiController]
     public class ReviewsController : ControllerBase
     {
-        private IReviewerRepository _reviewerRepository;
+        //private IReviewerRepository _reviewerRepository;
         private IReviewRepository _reviewRepository;
-        private IBookRepository _bookRepository;
+       // private IBookRepository _bookRepository;
 
-        public ReviewsController(IReviewerRepository reviewerRepository, IReviewRepository reviewRepository, IBookRepository bookRepository)
+        public ReviewsController(IReviewRepository reviewRepository)
         {
-            _reviewerRepository = reviewerRepository;
+           
             _reviewRepository = reviewRepository;
-            _bookRepository = bookRepository;
+            
         }
 
         // GET: api/Reviews
@@ -87,9 +87,7 @@ namespace BookApi.Controllers
         [ProducesResponseType(404)]
         public IActionResult GetReviewsForABook(int bookId)
         {
-            if (!_bookRepository.BookExists(bookId))
-                return NotFound();
-
+            
             var reviews = _reviewRepository.GetReviewsOfABook(bookId);
 
             if (!ModelState.IsValid)
@@ -108,6 +106,7 @@ namespace BookApi.Controllers
 
             return Ok(reviewsDto);
         }
+
 
 
     }
